@@ -16,6 +16,10 @@
         </a>
     </jsp:attribute>
     <jsp:body>
+        <c:set var="passIcon" value="${icons}/ic_checkbox_marked_circle_black_green_24dp.png"/>
+        <c:set var="passText" value="Validation Passed"/>
+        <c:set var="failIcon" value="${icons}/ic_error_red_24dp.png"/>
+        <c:set var="failText" value="Validation Failed"/>
 
         <div id="certificate-details-page" class="container-fluid">
             <div class="row">
@@ -132,7 +136,16 @@
                                                                 <span class="fieldHeader">File Size:</span>
                                                                 <span class="fieldValue">${resource.getSize()}</span><br/>
                                                                 <span class="fieldHeader">Hash:</span>
-                                                                <span class="fieldValue" style="overflow-wrap: break-word">${resource.getHashValue()}</span><br/>
+                                                                <span class="fieldValue" style="overflow-wrap: break-word">${resource.getHashValue()}
+                                                                    <c:choose>
+                                                                    <c:when test="${initialData.fileHashValid}">
+                                                                        <img src="${passIcon}" title="${passText}" />
+                                                                    </c:when>
+                                                                    <c:when test="${not initialData.fileHashValid}">
+                                                                        <img src="${failIcon}" title="${failText}" />
+                                                                    </c:when
+                                                                    </c:choose>
+                                                                </span><br/>
                                                                 <c:if test="${not empty resource.getRimFormat()}">
                                                                     <span class="fieldHeader">RIM Format:</span>
                                                                     <span class="fieldValue">${resource.getRimFormat()}</span><br/>
@@ -183,6 +196,13 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-1 col-md-offset-1"><span class="colHeader">Signature</span></div>
+            <div id="signature" class="col col-md-8">
+                <div>Validity:&nbsp;<span>${initialData.signatureValid}</span></div>
+                <div>Signer:&nbsp;<span>Link to signing certificate</span></div>
             </div>
         </div>
     </div>
